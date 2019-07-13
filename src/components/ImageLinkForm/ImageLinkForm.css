@@ -1,0 +1,12 @@
+.form {
+    width: 700px;
+}
+
+button {
+    background-color: rgb(134, 11, 206);
+    cursor: pointer;
+}
+
+.light {
+    background-color: #62177565;
+}
