@@ -6,7 +6,6 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 
@@ -14,7 +13,7 @@ const particlesOptions = {
   
     "particles": {
       "number": {
-        "value": 137,
+        "value": 80,
         "density": {
           "enable": true,
           "value_area": 710
@@ -22,6 +21,9 @@ const particlesOptions = {
       },
       "color": {
         "value": "#ffffff"
+      },
+      "move": {
+        "speed": 5
       }
     },
     "interactivity": {
@@ -43,13 +45,7 @@ const particlesOptions = {
     "retina_detect": true
   }
 
-const app = new Clarifai.App({apiKey: 'API_KEY'}); //add your own API key
-
-
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
+const initialState = {
       input: '',
       imageUrl: '',
       box: {
@@ -64,16 +60,20 @@ class App extends Component {
         password: '',
         entries: 0,
         joined: ''
-      }
-    }
+        }
+}
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = initialState;
   }
 
-  loadUser = (data) => {
+loadUser = (data) => {
     this.setState({user: {
       id: data.id,
       name: data.name,
       email: data.email,
-      password: data.password,
       entries: data.entries,
       joined: data.joined
     }})
@@ -102,7 +102,12 @@ class App extends Component {
 
   onSubmit = () => {
     this.setState({imageUrl: this.state.input});
-    app.models.predict("a403429f2ddf4b49b307e318f00e528b", this.state.input)
+    fetch('http://localhost:3000/imageurl', {
+      method: 'post',
+      headers: {'Content-type': 'application/json'},
+      body: JSON.stringify({input: this.state.input})
+    })
+    .then(response => response.json())
     .then(response => {
       if(response) {
         fetch('http://localhost:3000/image', {
@@ -121,7 +126,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === "signout") {
-      this.setState({isSignedIn: false});
+      this.setState(initialState);
     } else if (route === 'home') {
       this.setState({isSignedIn: true});
     }
