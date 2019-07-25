@@ -26,11 +26,14 @@ class SignIn extends React.Component {
         })
         .then(response => response.json())
         .then(user => {
+            if(user === 'Wrong credentials') {
+                alert('Wrong credentials');
+            }
             if(user.id){
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
             }
-        })
+        });
     }
 
     render() {
