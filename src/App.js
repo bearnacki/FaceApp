@@ -26,22 +26,6 @@ const particlesOptions = {
         "speed": 5
       }
     },
-    "interactivity": {
-      "detect_on": "canvas",
-      "events": {
-        "onclick": {
-          "enable": true,
-          "mode": "repulse"
-        },
-        "resize": true
-      },
-      "modes": {
-        "repulse": {
-          "distance": 200,
-          "duration": 0.4
-        }
-      }
-    },
     "retina_detect": true
   }
 
